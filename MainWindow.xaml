@@ -1,0 +1,95 @@
+<Window x:Class="Lab7.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Лабораторная №7 — OBJ и построение поверхностей"
+        Width="1280" Height="860" MinWidth="1000" MinHeight="650">
+    <DockPanel>
+        <TextBlock x:Name="Status" DockPanel.Dock="Bottom" Margin="8" TextWrapping="Wrap" />
+        <ScrollViewer DockPanel.Dock="Left" Width="370" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <GroupBox Header="Модель и OBJ">
+                    <StackPanel>
+                        <WrapPanel>
+                            <Button Content="Загрузить OBJ" Click="LoadObj_Click" />
+                            <Button Content="Сохранить объект OBJ" Click="SaveObj_Click" />
+                        </WrapPanel>
+                        <WrapPanel>
+                            <Button Content="Куб" Click="Cube_Click" />
+                        </WrapPanel>
+                        <TextBlock Text="Объект для преобразований:" />
+                        <ComboBox x:Name="ObjectList" DisplayMemberPath="Name" />
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Header="Фигура вращения">
+                    <StackPanel>
+                        <TextBlock Text="Образующая: радиус; координата вдоль оси.&#10;Одна точка в строке, в порядке обхода." TextWrapping="Wrap" />
+                        <TextBox x:Name="ProfileInput" AcceptsReturn="True" Height="105"
+                                 VerticalScrollBarVisibility="Auto" Text="0; -1&#10;1; -1&#10;1; 1&#10;0; 1" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" /><ColumnDefinition /><ColumnDefinition Width="Auto" /><ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Ось:" />
+                            <ComboBox x:Name="RevolutionAxis" Grid.Column="1" SelectedIndex="1">
+                                <ComboBoxItem Content="X" /><ComboBoxItem Content="Y" /><ComboBoxItem Content="Z" />
+                            </ComboBox>
+                            <TextBlock Grid.Column="2" Text="Разбиения:" />
+                            <TextBox x:Name="RevolutionSegments" Grid.Column="3" Text="32" />
+                        </Grid>
+                        <Button Content="Построить фигуру вращения" Click="Revolution_Click" />
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Header="График z = f(x, y)">
+                    <StackPanel>
+                        <ComboBox x:Name="FunctionList" SelectedIndex="0">
+                            <ComboBoxItem Content="sin(x) · cos(y)" />
+                            <ComboBoxItem Content="(x² + y²) / 4" />
+                            <ComboBoxItem Content="(x² − y²) / 4" />
+                            <ComboBoxItem Content="cos(√(x² + y²))" />
+                        </ComboBox>
+                        <UniformGrid Columns="4">
+                            <TextBlock Text="X от" /><TextBox x:Name="X0" Text="-3" />
+                            <TextBlock Text="до" /><TextBox x:Name="X1" Text="3" />
+                            <TextBlock Text="Y от" /><TextBox x:Name="Y0" Text="-3" />
+                            <TextBlock Text="до" /><TextBox x:Name="Y1" Text="3" />
+                            <TextBlock Text="Шагов X" /><TextBox x:Name="StepsX" Text="35" />
+                            <TextBlock Text="Шагов Y" /><TextBox x:Name="StepsY" Text="35" />
+                        </UniformGrid>
+                        <Button Content="Построить график" Click="Surface_Click" />
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Header="Аффинные преобразования">
+                    <StackPanel>
+                        <TextBlock Text="Перенос (dx, dy, dz):" />
+                        <UniformGrid Columns="3">
+                            <TextBox x:Name="MoveX" Text="0.5" /><TextBox x:Name="MoveY" Text="0" /><TextBox x:Name="MoveZ" Text="0" />
+                        </UniformGrid>
+                        <Button Content="Перенести" Click="Move_Click" />
+                        <TextBlock Text="Масштаб (kx, ky, kz), относительно центра:" />
+                        <UniformGrid Columns="3">
+                            <TextBox x:Name="ScaleX" Text="1.2" /><TextBox x:Name="ScaleY" Text="1.2" /><TextBox x:Name="ScaleZ" Text="1.2" />
+                        </UniformGrid>
+                        <Button Content="Масштабировать" Click="Scale_Click" />
+                        <TextBlock Text="Поворот относительно центра: ось и угол (°)" />
+                        <Grid>
+                            <Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                            <ComboBox x:Name="RotationAxis" SelectedIndex="1">
+                                <ComboBoxItem Content="X" /><ComboBoxItem Content="Y" /><ComboBoxItem Content="Z" />
+                            </ComboBox>
+                            <TextBox x:Name="RotationAngle" Grid.Column="1" Text="15" />
+                            <Button Grid.Column="2" Content="Повернуть" Click="Rotate_Click" />
+                        </Grid>
+                        <WrapPanel>
+                            <Button Content="Отразить XY" Tag="0" Click="Reflect_Click" />
+                            <Button Content="XZ" Tag="1" Click="Reflect_Click" />
+                            <Button Content="YZ" Tag="2" Click="Reflect_Click" />
+                        </WrapPanel>
+                    </StackPanel>
+                </GroupBox>
+            </StackPanel>
+        </ScrollViewer>
+        <Border x:Name="Viewport" Background="#202630" Margin="5" SizeChanged="Viewport_SizeChanged" ClipToBounds="True">
+            <Image x:Name="SceneImage" Stretch="Fill" RenderOptions.BitmapScalingMode="NearestNeighbor" />
+        </Border>
+    </DockPanel>
+</Window>
